@@ -6,10 +6,10 @@ import java.util.concurrent.TimeUnit;
 interface Vehicle {
 }
 
-class Car implements Vehicle {
+class TwoWheeler implements Vehicle {
 }
 
-class Bike implements Vehicle {
+class FourWheeler implements Vehicle {
 }
 
 class ParkingSystem {
@@ -21,10 +21,10 @@ class ParkingSystem {
 
     public void park(Vehicle vehicle) {
         synchronized (lock) {
-            if (vehicle instanceof Car && fourWheelerCount < FOUR_WHEELER_PARKING) {
+            if (vehicle instanceof FourWheeler && fourWheelerCount < FOUR_WHEELER_PARKING) {
                 fourWheelerCount++;
                 System.out.println(vehicle.getClass().getSimpleName() + " parked. Four wheeler count: " + fourWheelerCount);
-            } else if (vehicle instanceof Bike && twoWheelerCount < TWO_WHEELER_PARKING) {
+            } else if (vehicle instanceof TwoWheeler && twoWheelerCount < TWO_WHEELER_PARKING) {
                 twoWheelerCount++;
                 System.out.println(vehicle.getClass().getSimpleName() + " parked. Two wheeler count: " + twoWheelerCount);
             } else {
@@ -35,10 +35,10 @@ class ParkingSystem {
 
     public void leave(Vehicle vehicle) {
         synchronized (lock) {
-            if (vehicle instanceof Car && fourWheelerCount > 0) {
+            if (vehicle instanceof FourWheeler && fourWheelerCount > 0) {
                 fourWheelerCount--;
                 System.out.println(vehicle.getClass().getSimpleName() + " left. Four wheeler Count: " + fourWheelerCount);
-            } else if (vehicle instanceof Bike && twoWheelerCount > 0) {
+            } else if (vehicle instanceof TwoWheeler && twoWheelerCount > 0) {
                 twoWheelerCount--;
                 System.out.println(vehicle.getClass().getSimpleName() + " left. Two wheeler Count: " + twoWheelerCount);
             }
@@ -53,24 +53,24 @@ public class Main {
         ParkingSystem parkingSystem = new ParkingSystem();
         while (true) {
             Random random = new Random();
-            int randomInt = random.nextInt(0, 2);
-            int randomInt2 = random.nextInt(0, 2);
+            int randomVehicleSelector = random.nextInt(0, 2);
+            int randomActionSelector = random.nextInt(0, 2);
             int randomSleep = random.nextInt(0, 2);
             try {
                 TimeUnit.SECONDS.sleep(randomSleep);
-                switch (randomInt) {
+                switch (randomVehicleSelector) {
                     case 0 -> {
-                        if (randomInt2 == 0) {
-                            Thread.ofVirtual().start(() -> parkingSystem.park(new Car()));
+                        if (randomActionSelector == 0) {
+                            Thread.ofVirtual().start(() -> parkingSystem.park(new FourWheeler()));
                         } else {
-                            Thread.ofVirtual().start(() -> parkingSystem.park(new Bike()));
+                            Thread.ofVirtual().start(() -> parkingSystem.park(new TwoWheeler()));
                         }
                     }
                     case 1 -> {
-                        if (randomInt2 == 0) {
-                            Thread.ofVirtual().start(() -> parkingSystem.leave(new Car()));
+                        if (randomActionSelector == 0) {
+                            Thread.ofVirtual().start(() -> parkingSystem.leave(new FourWheeler()));
                         } else {
-                            Thread.ofVirtual().start(() -> parkingSystem.leave(new Bike()));
+                            Thread.ofVirtual().start(() -> parkingSystem.leave(new TwoWheeler()));
                         }
                     }
                     default -> {}
