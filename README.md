@@ -5,3 +5,6 @@
 - Deadlocks
 - Visibility Gaurantee
 - Atomicity
+
+#### Detailed Explanation of Parking System can be found here :-
+https://huzaifavakil.hashnode.dev/simple-parking-system-java
